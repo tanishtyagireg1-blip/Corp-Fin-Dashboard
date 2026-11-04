@@ -1,0 +1,280 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Titan Shock Dashboard</title>
+<style>
+:root{--bg:#fcfcfb;--card:#ffffff;--ink:#1b1f27;--ink2:#4a525e;--mute:#7a828e;--line:#e3e6ea;--grid:#eceef1;--s1:#2A78D6;--s2:#EB6834;--s3:#2CA58D;--s4:#9467BD;--bench:#8A8F98;--good:#1d7a4d;--bad:#b3341a;--chip:#eef2f8;--accent:#1F3864;--shadow:0 1px 2px rgba(20,30,50,.06)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#1a1a19;--card:#232322;--ink:#ecece9;--ink2:#b9bbbe;--mute:#8d9096;--line:#35373a;--grid:#2c2e30;--s1:#4A8FE0;--s2:#DC6F46;--s3:#2FA68B;--s4:#9A75CC;--bench:#9aa0a8;--good:#5fcf9a;--bad:#ff8a6b;--chip:#2b2f36;--accent:#9db7e8}}
+:root[data-theme="dark"]{--bg:#1a1a19;--card:#232322;--ink:#ecece9;--ink2:#b9bbbe;--mute:#8d9096;--line:#35373a;--grid:#2c2e30;--s1:#4A8FE0;--s2:#DC6F46;--s3:#2FA68B;--s4:#9A75CC;--bench:#9aa0a8;--good:#5fcf9a;--bad:#ff8a6b;--chip:#2b2f36;--accent:#9db7e8}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif}
+header{padding:20px 16px 8px;max-width:1180px;margin:0 auto}
+h1{font-size:22px;margin:0 0 2px;color:var(--accent);letter-spacing:-.2px}
+.sub{color:var(--mute);font-size:13px}
+nav{position:sticky;top:0;z-index:5;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 16px}
+nav .in{max-width:1180px;margin:0 auto;display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+button,select{font:inherit;color:var(--ink);background:var(--chip);border:1px solid var(--line);border-radius:8px;padding:5px 11px;cursor:pointer}
+button:hover{border-color:var(--s1)}button[aria-pressed="true"],button.on{background:var(--s1);border-color:var(--s1);color:#fff}
+nav .sp{flex:1}
+main{max-width:1180px;margin:0 auto;padding:12px 16px 48px}
+section{margin-top:22px;scroll-margin-top:56px}
+h2{font-size:17px;margin:0 0 3px;color:var(--accent)}h2+.sub{margin-bottom:10px}
+.grid{display:grid;gap:12px}.g2{grid-template-columns:repeat(auto-fit,minmax(400px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(250px,1fr))}.k6{grid-template-columns:repeat(auto-fit,minmax(170px,1fr))}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;box-shadow:var(--shadow);min-width:0}
+.card h3{font-size:13.5px;margin:0 0 2px}.card .cap{font-size:12px;color:var(--mute);margin-bottom:6px}
+.kpi .v{font-size:24px;font-weight:650;letter-spacing:-.3px;color:var(--ink)}.kpi .l{font-size:12px;color:var(--mute)}.kpi .n{font-size:12px;color:var(--ink2);margin-top:2px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin:6px 0}
+.chip{display:inline-block;padding:2px 9px;border-radius:999px;background:var(--chip);border:1px solid var(--line);font-size:12px}
+.chip.good{color:var(--good);border-color:var(--good)}.chip.bad{color:var(--bad);border-color:var(--bad)}
+svg{display:block;width:100%;height:auto;overflow:visible}svg text{font-family:inherit;fill:var(--ink2);font-size:11px}
+.legend{display:flex;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--ink2);margin:2px 0 4px}.legend i{display:inline-block;width:14px;height:3px;border-radius:2px;margin-right:5px;vertical-align:middle}
+.tt{position:fixed;pointer-events:none;background:var(--card);border:1px solid var(--line);border-radius:8px;padding:7px 9px;font-size:12px;box-shadow:0 4px 14px rgba(0,0,0,.18);z-index:20;display:none;max-width:260px}
+.tt b{color:var(--ink)}.tt .r{display:flex;justify-content:space-between;gap:12px}
+table{border-collapse:collapse;width:100%;font-size:12.5px}th,td{padding:4px 7px;border-bottom:1px solid var(--line);text-align:right;white-space:nowrap}th:first-child,td:first-child{text-align:left}th{color:var(--mute);font-weight:600;position:sticky;top:0;background:var(--card)}
+.scroll{max-height:260px;overflow:auto}.lastwrap td:last-child{white-space:normal;text-align:left;min-width:170px}.tbtn{float:right;font-size:11px;padding:2px 8px}
+.slider{display:flex;align-items:center;gap:10px;margin:6px 0}.slider input{flex:1}
+.finding{padding:7px 0;border-bottom:1px solid var(--line)}.finding:last-child{border:0}
+.small{font-size:12px;color:var(--mute)}
+#b-stats,#s-rate,#v-table,#s-table{overflow-x:auto}@media (max-width:520px){.g2,.g3{grid-template-columns:1fr}td,th{white-space:normal}.card{padding:10px}}
+</style>
+</head>
+<body>
+<header>
+<h1>How did shocks reshape Titan's risk and financial policy, 2020-26?</h1>
+<div class="sub">Corporate Finance WAI | Tanish Tyagi, M56D-26, Section D, IIM Ranchi | Data 1 Jul 2019 - 4 Nov 2026 | Companion to the report and the analysis workbook</div>
+</header>
+<nav><div class="in">
+<button data-go="overview">Overview</button><button data-go="prices">Prices &amp; shocks</button><button data-go="beta">Beta</button><button data-go="policy">Financial policy</button><button data-go="value">Value</button><button data-go="strategy">Strategy</button>
+<span class="sp"></span><button id="theme" aria-label="Toggle light and dark theme">Light / dark</button>
+</div></nav>
+<main>
+<section id="overview">
+<h2>Overview</h2><div class="sub">Titan versus the NIFTY 500 and what the shocks did to its risk. Everything on this page is computed from the workbook.</div>
+<div class="grid k6" id="kpis"></div>
+<div class="grid g2" style="margin-top:12px">
+<div class="card"><h3>Change in beta after each shock</h3><div class="cap">Post minus pre (six months each side). Click a bar to open that shock in the Beta section.</div><div id="ov-dbeta"></div></div>
+<div class="card"><h3>Key findings</h3><div id="findings"></div></div>
+</div>
+</section>
+
+<section id="prices">
+<h2>Prices &amp; shocks</h2><div class="sub">Pick a view and a date range. Vertical lines mark the eight shocks; orange lines are the three featured ones.</div>
+<div class="card">
+<div class="row" id="pv-ctl"></div>
+<div class="legend" id="pv-leg"></div>
+<div id="pv-chart"></div>
+<div class="small" id="pv-note"></div>
+</div>
+</section>
+
+<section id="beta">
+<h2>Did systematic risk change?</h2><div class="sub">CAPM beta in the six months before and after each shock, with the test of the change, robustness and the event-window reaction.</div>
+<div class="row" id="b-chips"></div>
+<div class="grid g3" style="margin-top:6px">
+<div class="card"><h3>Beta before vs after</h3><div class="cap">Bars = beta; whiskers = 95% confidence interval</div><div id="b-bars"></div></div>
+<div class="card"><h3>Test of the change</h3><div id="b-stats"></div></div>
+<div class="card"><h3>Returns around the shock</h3><div class="cap">Cumulative price return, six months each side</div><div class="legend" id="b-retl"></div><div id="b-ret"></div></div>
+</div>
+<div class="grid g2" style="margin-top:12px">
+<div class="card"><h3>Robustness: change in beta under nine specifications</h3><div class="cap">Different windows, buffers, risk-free proxies and weekly data</div><div id="b-rob"></div></div>
+<div class="card"><h3>Cumulative abnormal return, days -10 to +10</h3><div class="cap">Market model estimated on the 120 days before the window</div><div id="b-car"></div></div>
+</div>
+</section>
+
+<section id="policy">
+<h2>Financial policy</h2><div class="sub">Investment, leverage, payout and liquidity, FY19-FY26. Dots on the axis mark years with a shock (hover for the names).</div>
+<div class="row" id="p-tabs"></div>
+<div class="grid g2">
+<div class="card"><h3 id="p-t1"></h3><div class="cap" id="p-c1"></div><div class="legend" id="p-l1"></div><div id="p-ch1"></div></div>
+<div class="card"><h3 id="p-t2"></h3><div class="cap" id="p-c2"></div><div class="legend" id="p-l2"></div><div id="p-ch2"></div></div>
+</div>
+<div class="card" style="margin-top:12px"><h3>Policy scorecard</h3><div class="cap">Key metrics by year (consolidated)</div><div class="scroll" id="p-table"></div></div>
+</section>
+
+<section id="value">
+<h2>Value created or destroyed</h2><div class="sub">Two views: market (return above the CAPM-required return) and fundamental (ROIC minus WACC).</div>
+<div class="grid g2">
+<div class="card"><h3>Total shareholder return vs NIFTY 500</h3><div class="legend" id="v-l1"></div><div id="v-c1"></div></div>
+<div class="card"><h3>Excess value over cost of equity (Rs 000 cr)</h3><div class="cap">(TSR - cost of equity) x opening market cap</div><div id="v-c2"></div></div>
+<div class="card"><h3>ROIC vs WACC</h3><div class="legend" id="v-l3"></div><div id="v-c3"></div></div>
+<div class="card"><h3>Verdict by year</h3><div class="scroll lastwrap" id="v-table" style="max-height:none"></div></div>
+</div>
+</section>
+
+<section id="strategy">
+<h2>What should the CFO do? Five-year strategy and stress tests</h2><div class="sub">Status quo vs recommended policy, each under a base and a stress environment (+250 bp, weak demand). Illustrative model outputs, not forecasts.</div>
+<div class="card">
+<div class="row" id="s-ctl"></div><div class="legend" id="s-leg"></div><div id="s-chart"></div>
+</div>
+<div class="grid g2" style="margin-top:12px">
+<div class="card" style="grid-column:1/-1"><h3>Scenario summary FY27-FY31</h3><div class="scroll" id="s-table" style="max-height:none"></div></div>
+<div class="card"><h3>Interest-rate stress on the FY26 balance sheet</h3>
+<div class="slider"><label for="sl-bp" style="width:110px">Rate shock</label><input id="sl-bp" type="range" min="0" max="400" step="25" value="250"><b id="o-bp" style="width:62px;text-align:right"></b></div>
+<div class="slider"><label for="sl-h" style="width:110px">Hedged (fixed)</label><input id="sl-h" type="range" min="0" max="100" step="5" value="0"><b id="o-h" style="width:62px;text-align:right"></b></div>
+<div id="s-rate"></div>
+</div>
+<div class="card"><h3>WACC vs leverage (illustrative)</h3><div class="cap">Hamada relevering, credit spread rises with debt; red = interest cover below 5x</div><div id="s-curve"></div></div>
+<div class="card"><h3>CFO action list</h3><div id="s-act"></div></div>
+</div>
+</section>
+<p class="small" style="margin-top:28px">Sources: NSE (Titan prices), NSE Indices (NIFTY 500, price index), Titan annual reports FY2019-20 to FY2025-26, RBI, FRED/OECD. Beta uses daily excess returns over the repo rate. Limitations: NIFTY series excludes dividends; 6% equity risk premium is an assumption; FY20 is a nine-month window; FY27 has no audited accounts. See the report and the workbook (Checks, Robustness, Sources sheets).</p>
+</main>
+<div class="tt" id="tt"></div>
+<script>
+const DATA=__DATA__;
+</script>
+<script>
+(function(){
+const D=DATA, $=s=>document.querySelector(s), tt=$('#tt');
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+const C=()=>({s1:css('--s1'),s2:css('--s2'),s3:css('--s3'),s4:css('--s4'),bench:css('--bench'),grid:css('--grid'),ink:css('--ink2'),line:css('--line')});
+const f1=x=>x==null||isNaN(x)?'n/a':x.toFixed(1), f2=x=>x==null||isNaN(x)?'n/a':x.toFixed(2), pc=(x,d=1)=>x==null||isNaN(x)?'n/a':(x*100).toFixed(d)+'%', sg=(x,d=2)=>(x>=0?'+':'')+x.toFixed(d), n0=x=>x==null||isNaN(x)?'n/a':Math.round(x).toLocaleString('en-IN');
+function el(t,a={},h=''){const e=document.createElement(t);for(const k in a){if(k==='class')e.className=a[k];else e.setAttribute(k,a[k])}e.innerHTML=h;return e}
+function showTT(ev,html){tt.innerHTML=html;tt.style.display='block';const w=tt.offsetWidth,h=tt.offsetHeight;let x=ev.clientX+14,y=ev.clientY+14;if(x+w>innerWidth-8)x=ev.clientX-w-14;if(y+h>innerHeight-8)y=ev.clientY-h-14;tt.style.left=x+'px';tt.style.top=y+'px'}
+function hideTT(){tt.style.display='none'}
+function legend(node,series){node.innerHTML=series.map(s=>`<span><i style="background:${s.color};${s.dash?'background:repeating-linear-gradient(90deg,'+s.color+' 0 4px,transparent 4px 7px)':''}"></i>${s.name}</span>`).join('')}
+// ---- generic chart engine
+function nice(min,max,n=5){if(min===max){max=min+1}const span=max-min,step0=span/n,mag=Math.pow(10,Math.floor(Math.log10(step0)));let step=mag;for(const m of[1,2,2.5,5,10]){if(m*mag>=step0){step=m*mag;break}}const lo=Math.floor(min/step)*step,hi=Math.ceil(max/step)*step,t=[];for(let v=lo;v<=hi+1e-9;v+=step)t.push(+v.toFixed(10));return{lo,hi,ticks:t}}
+function drawLine(host,o){
+  host.innerHTML='';const W=host.clientWidth||600,H=o.h||260,m={l:46,r:o.rm||12,t:o.top||12,b:o.xb||26};
+  const n=o.xs.length,all=[];o.series.forEach(s=>s.values.forEach(v=>{if(v!=null&&!isNaN(v))all.push(v)}));
+  let lo=o.ymin!=null?o.ymin:Math.min(...all),hi=o.ymax!=null?o.ymax:Math.max(...all);(o.hlines||[]).forEach(h=>{lo=Math.min(lo,h.y);hi=Math.max(hi,h.y)});
+  const nc=nice(lo,hi,5),yl=nc.lo,yh=nc.hi,X=i=>m.l+(n===1?0:i/(n-1))*(W-m.l-m.r),Y=v=>m.t+(1-(v-yl)/(yh-yl))*(H-m.t-m.b),c=C();
+  let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||'chart'}">`;
+  nc.ticks.forEach(t=>{g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="${c.grid}"/><text x="${m.l-6}" y="${Y(t)+3.5}" text-anchor="end">${o.yfmt?o.yfmt(t):t}</text>`});
+  (o.xticks||[]).forEach(t=>{g+=`<text x="${X(t.i)}" y="${H-8}" text-anchor="middle">${t.l}</text><line x1="${X(t.i)}" x2="${X(t.i)}" y1="${H-m.b}" y2="${H-m.b+4}" stroke="${c.line}"/>`});
+  (o.hlines||[]).forEach(h=>{g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(h.y)}" y2="${Y(h.y)}" stroke="${c.bench}" stroke-dasharray="4 3"/><text x="${W-m.r}" y="${Y(h.y)-4}" text-anchor="end">${h.label}</text>`});
+  (o.vmarks||[]).forEach(v=>{if(v.i<0||v.i>=n)return;g+=`<line x1="${X(v.i)}" x2="${X(v.i)}" y1="${m.t}" y2="${H-m.b}" stroke="${v.strong?c.s2:c.bench}" stroke-width="${v.strong?1.4:1}" ${v.strong?'':'stroke-dasharray="3 3"'} opacity="${v.strong?.9:.7}"/><text x="${X(v.i)+3}" y="${m.t+9}" style="fill:${v.strong?c.s2:c.bench};font-weight:${v.strong?700:400}">${v.l}</text>`});
+  o.series.forEach(s=>{let d='',pen=false;s.values.forEach((v,i)=>{if(v==null||isNaN(v)){pen=false;return}d+=(pen?'L':'M')+X(i).toFixed(1)+' '+Y(v).toFixed(1);pen=true});g+=`<path d="${d}" fill="none" stroke="${s.color}" stroke-width="${s.w||1.6}" ${s.dash?'stroke-dasharray="6 4"':''} stroke-linejoin="round"/>`;
+    if(o.dots)s.values.forEach((v,i)=>{if(v!=null&&!isNaN(v))g+=`<circle cx="${X(i)}" cy="${Y(v)}" r="3.2" fill="${s.color}" stroke="var(--card)" stroke-width="1.5"/>`})});
+  (o.xdots||[]).forEach(i=>{g+=`<circle cx="${X(i)}" cy="${H-m.b+1}" r="3.2" fill="${c.s2}"/>`});
+  g+=`<line id="cx" y1="${m.t}" y2="${H-m.b}" stroke="${c.ink}" stroke-width="1" style="display:none"/><rect x="${m.l}" y="${m.t}" width="${W-m.l-m.r}" height="${H-m.t-m.b}" fill="transparent" id="hit"/></svg>`;host.innerHTML=g;
+  const svg=host.querySelector('svg'),hit=svg.querySelector('#hit'),cx=svg.querySelector('#cx');
+  const mv=ev=>{const r=svg.getBoundingClientRect(),px=(ev.clientX-r.left)*W/r.width;let i=Math.round((px-m.l)/(W-m.l-m.r)*(n-1));i=Math.max(0,Math.min(n-1,i));cx.setAttribute('x1',X(i));cx.setAttribute('x2',X(i));cx.style.display='';
+    const rows=o.series.map(s=>`<div class="r"><span><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${s.color};margin-right:5px"></i>${s.name}</span><b>${o.tfmt?o.tfmt(s.values[i]):f2(s.values[i])}</b></div>`).join('');
+    showTT(ev,`<b>${o.xlab?o.xlab(i):o.xs[i]}</b>${rows}${o.extra?o.extra(i):''}`)};
+  hit.addEventListener('mousemove',mv);hit.addEventListener('mouseleave',()=>{hideTT();cx.style.display='none'});
+  hit.addEventListener('touchmove',e=>{mv(e.touches[0])},{passive:true});
+}
+function drawBars(host,o){
+  host.innerHTML='';const W=host.clientWidth||500,H=o.h||240,m={l:46,r:10,t:10,b:o.xb||26},c=C(),k=o.series.length,n=o.cats.length;
+  const all=[0];o.series.forEach((s,si)=>s.values.forEach((v,i)=>{if(v==null)return;all.push(v);if(s.err)all.push(v+s.err[i],v-s.err[i])}));
+  const nc=nice(Math.min(...all),Math.max(...all),5),yl=o.ymin!=null?o.ymin:nc.lo,yh=o.ymax!=null?o.ymax:nc.hi,Y=v=>m.t+(1-(v-yl)/(yh-yl))*(H-m.t-m.b),bw=(W-m.l-m.r)/n,gw=bw*.72,w=gw/k;
+  let g=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${o.aria||'chart'}">`;
+  nc.ticks.forEach(t=>{if(t<yl||t>yh)return;g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(t)}" y2="${Y(t)}" stroke="${t===0?c.ink:c.grid}" ${t===0?'stroke-width=".8"':''}/><text x="${m.l-6}" y="${Y(t)+3.5}" text-anchor="end">${o.yfmt?o.yfmt(t):t}</text>`});
+  (o.hlines||[]).forEach(h=>{g+=`<line x1="${m.l}" x2="${W-m.r}" y1="${Y(h.y)}" y2="${Y(h.y)}" stroke="${c.s2}" stroke-dasharray="4 3"/><text x="${m.l+4}" y="${Y(h.y)-4}">${h.label}</text>`});
+  o.cats.forEach((cat,i)=>{const x0=m.l+i*bw+(bw-gw)/2;
+    o.series.forEach((s,si)=>{const v=s.values[i];if(v==null){if(k===1)g+=`<text x="${m.l+i*bw+bw/2}" y="${Y(0)-5}" text-anchor="middle" style="font-size:10px">n/a</text>`;return}const col=s.colors?s.colors[i]:s.color,y0=Y(0),y1=Y(v),x=x0+si*w;const r=Math.min(3,w/3);
+      g+=`<rect data-i="${i}" x="${(x+1).toFixed(1)}" y="${Math.min(y0,y1).toFixed(1)}" width="${Math.max(1,w-2).toFixed(1)}" height="${Math.max(1,Math.abs(y1-y0)).toFixed(1)}" rx="${r}" fill="${col}" class="bar" style="cursor:${o.click?'pointer':'default'}"/>`;
+      if(s.err){g+=`<line x1="${x+w/2}" x2="${x+w/2}" y1="${Y(v-s.err[i])}" y2="${Y(v+s.err[i])}" stroke="${c.ink}" stroke-width="1"/><line x1="${x+w/2-3}" x2="${x+w/2+3}" y1="${Y(v+s.err[i])}" y2="${Y(v+s.err[i])}" stroke="${c.ink}"/><line x1="${x+w/2-3}" x2="${x+w/2+3}" y1="${Y(v-s.err[i])}" y2="${Y(v-s.err[i])}" stroke="${c.ink}"/>`}
+      if(o.labels&&k===1&&n<=12)g+=`<text x="${x+w/2}" y="${(v>=0?y1-4:y1+11).toFixed(1)}" text-anchor="middle" style="font-size:10px">${o.lfmt?o.lfmt(v):f2(v)}</text>`});
+    g+=`<text x="${m.l+i*bw+bw/2}" y="${H-9}" text-anchor="middle" ${o.catSel===i?'style="font-weight:700;fill:var(--ink)"':''}>${cat}</text>`});
+  g+='</svg>';host.innerHTML=g;
+  host.querySelectorAll('rect.bar').forEach(r=>{const i=+r.dataset.i;r.addEventListener('mousemove',ev=>{showTT(ev,`<b>${o.cats[i]}</b>`+o.series.map(s=>`<div class="r"><span><i style="display:inline-block;width:9px;height:9px;border-radius:2px;background:${s.colors?s.colors[i]:s.color};margin-right:5px"></i>${s.name}</span><b>${o.tfmt?o.tfmt(s.values[i],i,s):f2(s.values[i])}</b></div>`).join('')+(o.extra?o.extra(i):''))});r.addEventListener('mouseleave',hideTT);if(o.click)r.addEventListener('click',()=>o.click(i))});
+}
+function tableOf(cols,rows){return `<table><thead><tr>${cols.map(c=>`<th>${c}</th>`).join('')}</tr></thead><tbody>${rows.map(r=>`<tr>${r.map(c=>`<td>${c}</td>`).join('')}</tr>`).join('')}</tbody></table>`}
+// table toggle helper
+function withTable(cardSel,chartId,renderTable){const card=$(cardSel);if(!card)return;const b=el('button',{class:'tbtn','aria-pressed':'false'},'Table view');card.querySelector('h3').after(b);let on=false;const tb=el('div',{class:'scroll'});tb.style.display='none';card.appendChild(tb);b.onclick=()=>{on=!on;b.setAttribute('aria-pressed',on);tb.style.display=on?'block':'none';$(chartId).style.display=on?'none':'block';if(on)tb.innerHTML=renderTable()}}
+// ---- shared data
+const SH=D.shocks, FY=D.fy, dates=D.dates;
+const di=d=>{let lo=0,hi=dates.length-1;while(lo<hi){const m=(lo+hi)>>1;if(dates[m]<d)lo=m+1;else hi=m}return lo};
+const shockIdx=SH.map(s=>di(s.date));
+const monthLbl=i=>{const d=new Date(dates[i]);return d.toLocaleString('en',{month:'short'})+' '+String(d.getFullYear()).slice(2)};
+function xticksFor(a,b){const t=[];let last='';for(let i=a;i<=b;i++){const y=dates[i].slice(0,4),mo=dates[i].slice(5,7);const key=(b-a>900)?y+(mo<'07'?'a':'b'):y+mo.slice(0,2);const want=(b-a>900)?(mo==='01'||mo==='07'):(b-a>400?(['01','04','07','10'].includes(mo)):true);if(key!==last&&want){t.push({i:i-a,l:(b-a>900&&mo==='01')?y:monthLbl(i)});last=key}}return t.filter((x,k)=>k===0||x.i-t[k-1].i>20)}
+const fyOf={S1:'FY20',S2:'FY21',S3:'FY22',S4:'FY22',S5:'FY23',S6:'FY23',S7:'FY26',S8:'FY26'};
+// ---- KPIs
+(function(){const k=D.kpi,s8=SH[7],s1=SH[0];const items=[
+ ['Titan price return',pc(k.titanRet,0),'vs NIFTY 500 '+pc(k.niftyRet,0)+', Jul 2019 - Nov 2026'],
+ ['Beta, whole period',f2(k.beta),'Jensen alpha '+pc(k.alpha)+' a year (not significant)'],
+ ['Beta after the Iran-war shock',f2(s8.post),'from '+f2(s8.pre)+', p = '+s8.p.toFixed(3)],
+ ['Beta after the lockdown',f2(s1.post),'from '+f2(s1.pre)+', p = '+s1.p.toFixed(3)],
+ ['D/E, all debt, FY26',f2(D.ratios.de3[7])+'x','from '+f2(D.ratios.de3[3])+'x in FY22; cover '+f1(D.ratios.cov[7])+'x'],
+ ['Excess value FY21-26','Rs '+(k.exVal/1000).toFixed(0)+'k cr','ROIC > WACC in 5 of 6 years']];
+$('#kpis').innerHTML=items.map(i=>`<div class="card kpi"><div class="l">${i[0]}</div><div class="v">${i[1]}</div><div class="n">${i[2]}</div></div>`).join('')})();
+// ---- overview chart + findings
+let selShock=7;
+function ovD(){const c=C();drawBars($('#ov-dbeta'),{cats:SH.map(s=>s.id),series:[{name:'Change in beta',values:SH.map(s=>s.chg),colors:SH.map(s=>s.p<0.1?c.s1:c.bench)}],h:230,labels:true,lfmt:v=>sg(v),yfmt:v=>sg(v,1),click:i=>{selShock=i;renderBeta();document.getElementById('beta').scrollIntoView({behavior:'smooth'})},tfmt:(v,i)=>sg(v)+' (p = '+SH[i].p.toFixed(3)+')',extra:i=>`<div class="small">${SH[i].name}</div>`,aria:'Change in beta by shock'})}
+$('#findings').innerHTML=[
+ `<b>Risk is not constant.</b> Beta rose after the Iran-war shock (${f2(SH[7].pre)} to ${f2(SH[7].post)}, p = ${SH[7].p.toFixed(3)}, significant in ${SH[7].same} of ${SH[7].valid} specifications) and, more weakly, after the lockdown (p = ${SH[0].p.toFixed(3)}). The 2022 rate hikes moved the price, not the beta (p = ${SH[4].p.toFixed(2)}).`,
+ `<b>Leverage rose, cover fell.</b> D/E (all debt) went from ${f2(D.ratios.de3[3])}x to ${f2(D.ratios.de3[7])}x (FY22-FY26) and interest cover from ${f1(D.ratios.cov[3])}x to ${f1(D.ratios.cov[7])}x (low of ${f1(Math.min(...D.ratios.cov.slice(1)))}x).`,
+ `<b>Value was created, unevenly.</b> The stock beat its required return in 4 of 6 years, with large give-backs in FY23 and FY25; ROIC beat WACC in 5 of 6.`,
+ `<b>Smoothed payout, uneven cash.</b> Dividends were held in a ${pc(Math.min(...D.ratios.payout.slice(1)),0)}-${pc(Math.max(...D.ratios.payout.slice(1)),0)} payout band, but free cash flow (after gold-loan swings and capex) was negative in 3 of the last 6 years, so dividends were partly debt-funded.`,
+ `<b>Hedging alone is not enough.</b> Under stress the recommended policy still breaches the 5x cover floor in 2 years versus 3; leverage has to fall before the shock.`].map(t=>`<div class="finding">${t}</div>`).join('');
+// ---- prices
+let pv={view:'idx',a:0,b:dates.length-1,mk:true};
+const RANGES={'Full period':[0,dates.length-1],'FY21':['2020-04-01','2021-03-31'],'FY22':['2021-04-01','2022-03-31'],'FY23':['2022-04-01','2023-03-31'],'FY24':['2023-04-01','2024-03-31'],'FY25':['2024-04-01','2025-03-31'],'FY26':['2025-04-01','2026-03-31'],'FY27 YTD':['2026-04-01','2026-11-04']};
+function pvCtl(){const h=$('#pv-ctl');h.innerHTML='';[['idx','Indexed price'],['dd','Drawdown from peak'],['rb','Rolling 126-day beta']].forEach(([k,l])=>{const b=el('button',{'aria-pressed':pv.view===k},l);b.onclick=()=>{pv.view=k;pvCtl();pvDraw()};h.appendChild(b)});h.appendChild(el('span',{class:'sub'},'Range:'));
+ const sel=el('select',{'aria-label':'Date range'});Object.keys(RANGES).forEach(k=>sel.appendChild(el('option',{value:k},k)));sel.value=pv.rng||'Full period';sel.onchange=()=>{pv.rng=sel.value;const r=RANGES[sel.value];pv.a=typeof r[0]==='number'?r[0]:di(r[0]);pv.b=typeof r[1]==='number'?r[1]:Math.min(dates.length-1,di(r[1]));pvDraw()};h.appendChild(sel);
+ const cb=el('label',{class:'sub'},'<input type="checkbox" id="mk" '+(pv.mk?'checked':'')+'> show shock lines');h.appendChild(cb);cb.querySelector('input').onchange=e=>{pv.mk=e.target.checked;pvDraw()};
+ const tb=el('button',{class:'tbtn','aria-pressed':'false'},'Table view');tb.onclick=()=>{const on=tb.getAttribute('aria-pressed')!=='true';tb.setAttribute('aria-pressed',on);pv.tbl=on;pvDraw()};h.appendChild(tb)}
+function pvDraw(){const c=C(),a=pv.a,b=pv.b,sl=x=>x.slice(a,b+1),xs=sl(dates);let series,yf,tf,ymin,hl;
+ if(pv.view==='idx'){const t=sl(D.titan),n=sl(D.nifty),r=t[0],q=n[0];series=[{name:'Titan',color:c.s1,values:t.map(v=>v/r*100)},{name:'NIFTY 500 (price)',color:c.bench,values:n.map(v=>v/q*100)}];yf=v=>v.toFixed(0);tf=v=>v.toFixed(1)}
+ else if(pv.view==='dd'){series=[{name:'Titan',color:c.s1,values:sl(D.dd)}];yf=v=>(v*100).toFixed(0)+'%';tf=v=>pc(v)}
+ else{series=[{name:'Titan rolling beta',color:c.s1,values:sl(D.rb)}];yf=v=>v.toFixed(1);tf=v=>f2(v);hl=[{y:1,label:'beta = 1'}]}
+ legend($('#pv-leg'),series);
+ const vm=pv.mk?SH.map((s,k)=>({i:shockIdx[k]-a,l:s.id,strong:s.feat})):[];
+ if(pv.tbl){$('#pv-chart').innerHTML='<div class="scroll">'+tableOf(['Date',...series.map(s=>s.name)],xs.map((d,i)=>[d,...series.map(s=>tf(s.values[i]))]).filter((r,i)=>i%10===0))+'</div>';$('#pv-note').textContent='Every tenth trading day shown.';return}
+ drawLine($('#pv-chart'),{xs,series,h:300,yfmt:yf,tfmt:tf,xticks:xticksFor(a,b),vmarks:vm,hlines:hl,aria:'Price chart',xlab:i=>new Date(xs[i]).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'}),extra:i=>{const k=shockIdx.indexOf(a+i);return k>=0?`<div class="small"><b>${SH[k].id}</b> ${SH[k].name}</div>`:''}});
+ const rng=pv.view==='idx'?`Over this range Titan returned ${pc(xs.length?D.titan[b]/D.titan[a]-1:0)} and the NIFTY 500 ${pc(D.nifty[b]/D.nifty[a]-1)}.`:pv.view==='dd'?`Deepest drawdown in range: ${pc(Math.min(...sl(D.dd)))}.`:`Mean rolling beta in range: ${f2(sl(D.rb).filter(v=>v!=null).reduce((p,v,_,arr)=>p+v/arr.length,0))}.`;$('#pv-note').textContent=rng}
+// ---- beta section
+function renderBeta(){const c=C(),s=SH[selShock];
+ const ch=$('#b-chips');ch.innerHTML='';SH.forEach((x,i)=>{const b=el('button',{'aria-pressed':i===selShock,title:x.name},x.id+(x.feat?' *':''));b.onclick=()=>{selShock=i;renderBeta()};ch.appendChild(b)});ch.appendChild(el('span',{class:'sub'},`${s.id}: ${s.name} (${new Date(s.date).toLocaleDateString('en-GB',{day:'2-digit',month:'short',year:'numeric'})}). Channel: ${s.chan}. * = featured.`));
+ drawBars($('#b-bars'),{cats:['6m before: '+f2(s.pre),'6m after: '+f2(s.post)],series:[{name:'Beta',values:[s.pre,s.post],colors:[c.bench,c.s1],err:[s.ciPre,s.ciPost]}],h:230,labels:false,hlines:[{y:1,label:'beta = 1'}],ymin:0,tfmt:v=>f2(v),aria:'Beta before and after'});
+ const sig=s.p<0.05?'good':(s.p<0.1?'':'bad');
+ $('#b-stats').innerHTML=tableOf(['Statistic','Value'],[['Beta before',f2(s.pre)+' (SE '+f2(s.ciPre/1.97)+')'],['Beta after',f2(s.post)+' (SE '+f2(s.ciPost/1.97)+')'],['Change',sg(s.chg)],['95% CI of change',sg(s.lo)+' to '+sg(s.hi)],['t-statistic (df '+s.df+')',f2(s.t)],['p-value',s.p.toFixed(3)],['Verdict',`<span class="chip ${s.p<0.1?'good':''}">${s.verdict}</span>`],['R-squared before / after',f2(s.r2pre)+' / '+f2(s.r2post)],['Alpha before / after (ann.)',pc(s.alphaPre,0)+' / '+pc(s.alphaPost,0)],['Event CAR [-1,+1]',pc(s.car)+' (p '+s.carP.toFixed(2)+')'],['Specs same sign, p<0.10',s.same+' of '+s.valid]]);
+ legend($('#b-retl'),[{name:'Titan',color:c.s1},{name:'NIFTY 500',color:c.bench}]);drawBars($('#b-ret'),{cats:['Before','After'],series:[{name:'Titan',values:[s.titanPre,s.titanPost],color:c.s1},{name:'NIFTY 500',values:[s.niftyPre,s.niftyPost],color:c.bench}],h:230,yfmt:v=>(v*100).toFixed(0)+'%',tfmt:v=>pc(v),aria:'Returns before and after'});
+ const rb=$('#b-rob');drawBars(rb,{cats:D.specNames.map((n,i)=>String(i+1)),series:[{name:'Change in beta',values:s.specs.map(v=>typeof v==='number'?v:null),colors:s.specs.map(v=>typeof v==='number'?(v>=0?c.s1:c.s2):c.bench)}],h:230,labels:true,lfmt:v=>sg(v,2),tfmt:(v,i)=>v==null?'n/a (window not available)':sg(v),extra:i=>`<div class="small">${D.specNames[i]}</div>`,aria:'Robustness'});
+ rb.insertAdjacentHTML('beforeend',`<div class="small">${D.specNames.map((n,i)=>(i+1)+' '+n).join(' | ')}</div>`);
+ const p=D.car[s.id];drawLine($('#b-car'),{xs:p.map(x=>x[0]),series:[{name:'CAR',color:c.s1,values:p.map(x=>x[1])}],h:230,dots:false,yfmt:v=>(v*100).toFixed(0)+'%',tfmt:v=>pc(v),xlab:i=>'Day '+p[i][0],xticks:[-10,-5,0,5,10].map(d=>({i:d+10,l:String(d)})),vmarks:[{i:10,l:'event',strong:true}],hlines:[{y:0,label:''}],aria:'Cumulative abnormal return'})}
+// ---- policy
+const shockYears=FY.map(f=>SH.filter(s=>fyOf[s.id]===f));
+const PT=[
+ {k:'lev',name:'Leverage and cover',c1:{t:'Debt / equity (x)',cap:'Book debt over book equity under three definitions',ser:[['All debt incl. gold & leases','de3','s1'],['Borrowings + gold on loan','de2','s3'],['Borrowings only','de1','bench']],fmt:f2,yf:v=>v.toFixed(1)},c2:{t:'Interest cover (x)',cap:'EBIT / finance costs; operating EBIT version excludes other income',ser:[['EBIT / finance costs','cov','s1'],['Operating EBIT / finance costs','cov4','s2']],fmt:f1,yf:v=>v.toFixed(0),hl:[{y:5,label:'5x floor'}]}},
+ {k:'inv',name:'Investment',c1:{t:'Gross fixed assets / total assets',cap:'The brief\'s capex proxy; falls because inventory grew faster than plant',ser:[['Gross fixed assets / total assets','gfa','s1']],fmt:v=>pc(v),yf:v=>(v*100).toFixed(0)+'%'},c2:{t:'Capex / depreciation (x)',cap:'Below 1x = asset base shrinking in real terms',ser:[['Capex / depreciation','capexdep','s2']],fmt:f2,yf:v=>v.toFixed(1),hl:[{y:1,label:'1x'}]}},
+ {k:'pay',name:'Payout',c1:{t:'Dividend payout (DPS / EPS)',cap:'Smoothed in a narrow band while EPS swung',ser:[['Payout ratio','payout','s1']],fmt:v=>pc(v),yf:v=>(v*100).toFixed(0)+'%'},c2:{t:'Free cash flow ex gold-loan vs dividends (Rs cr)',cap:'FCF = operating cash flow - change in gold on loan - capex',ser:[['Free cash flow','fcf','s1'],['Dividends paid','divpd','s2']],fmt:n0,yf:v=>(v/1000).toFixed(1)+'k'}},
+ {k:'liq',name:'Liquidity and funding',c1:{t:'Cash reserves / borrowings (x)',cap:'Liquid assets over borrowings',ser:[['Cash reserves / borrowings','liqb','s1']],fmt:f2,yf:v=>v.toFixed(0),ymax:5},c2:{t:'Funding mix (Rs cr)',cap:'Borrowings, gold on loan, leases',ser:[['Borrowings','borrow','s1'],['Gold on loan','gold','s2'],['Lease liabilities','lease','bench']],fmt:n0,yf:v=>(v/1000).toFixed(0)+'k'}}];
+let pTab=0;
+function policy(){const c=C();const tb=$('#p-tabs');tb.innerHTML='';PT.forEach((t,i)=>{const b=el('button',{'aria-pressed':i===pTab},t.name);b.onclick=()=>{pTab=i;policy()};tb.appendChild(b)});
+ [['1','c1'],['2','c2']].forEach(([n,k])=>{const t=PT[pTab][k];$('#p-t'+n).textContent=t.t;$('#p-c'+n).textContent=t.cap;const series=t.ser.map(s=>({name:s[0],color:c[s[2]],values:D.ratios[s[1]].slice(1)}));legend($('#p-l'+n),series);
+  const xdots=FY.slice(1).map((f,i)=>shockYears[i+1].length?i:-1).filter(i=>i>=0);
+  drawLine($('#p-ch'+n),{xs:FY.slice(1),series,h:230,dots:true,yfmt:t.yf,tfmt:t.fmt,hlines:t.hl,xticks:FY.slice(1).map((f,i)=>({i,l:f})),xdots,ymin:(pTab===2&&n==='2')?undefined:0,ymax:t.ymax,aria:t.t,extra:i=>shockYears[i+1].length?`<div class="small">Shocks: ${shockYears[i+1].map(s=>s.id+' '+s.name).join('; ')}</div>`:''})});
+ const r=D.ratios,w=D.wacc,rows=[['D/E, all debt (x)',r.de3,f2],['Interest cover (x)',r.cov,f1],['Gross FA / total assets',r.gfa,pc],['Capex (Rs cr)',r.capex,n0],['Capex / depreciation (x)',r.capexdep,f2],['Payout (DPS/EPS)',r.payout,pc],['Cash / borrowings (x)',r.liqb,f2],['FCF ex gold-loan (Rs cr)',r.fcf,n0],['Inventory days',r.invd,n0],['Annual beta (raw)',w.beta,f2],['WACC',w.wacc,pc],['ROIC',w.roic,pc]];
+ $('#p-table').innerHTML=tableOf(['Metric',...FY.slice(1)],rows.map(x=>[x[0],...x[1].slice(1).map(v=>typeof v==='number'?x[2](v):'n/a')]))}
+// ---- value
+function value(){const c=C(),V=D.value,cats=V.map(v=>v.fy+(v.fy==='FY20'||v.fy==='FY27'?'*':''));
+ legend($('#v-l1'),[{name:'Titan TSR',color:c.s1},{name:'NIFTY 500 price return',color:c.bench}]);
+ drawBars($('#v-c1'),{cats,series:[{name:'Titan TSR',values:V.map(v=>v.tsr),color:c.s1},{name:'NIFTY 500',values:V.map(v=>v.nifty),color:c.bench}],h:230,yfmt:v=>(v*100).toFixed(0)+'%',tfmt:v=>pc(v),extra:i=>`<div class="small">${V[i].shocks}</div>`,aria:'TSR vs NIFTY'});
+ drawBars($('#v-c2'),{cats,series:[{name:'Excess value (Rs 000 cr)',values:V.map(v=>v.exVal/1000),colors:V.map(v=>v.exVal>=0?c.s1:c.s2)}],h:230,labels:true,lfmt:v=>v.toFixed(0),yfmt:v=>v.toFixed(0),tfmt:v=>v.toFixed(1)+'k cr',aria:'Excess value'});
+ legend($('#v-l3'),[{name:'ROIC',color:c.s1},{name:'WACC',color:c.s2}]);const fy=FY.slice(1);
+ drawLine($('#v-c3'),{xs:fy,series:[{name:'ROIC',color:c.s1,values:D.wacc.roic.slice(1)},{name:'WACC',color:c.s2,values:D.wacc.wacc.slice(1)}],h:230,dots:true,yfmt:v=>(v*100).toFixed(0)+'%',tfmt:v=>pc(v),xticks:fy.map((f,i)=>({i,l:f})),aria:'ROIC vs WACC'});
+ $('#v-table').innerHTML=tableOf(['Year','TSR','Excess over Ke','Excess value (Rs cr)','ROIC-WACC','Reading'],V.map(v=>[v.fy+(v.fy==='FY20'||v.fy==='FY27'?'*':''),pc(v.tsr,0),sg(v.exKe*100,0)+'pp',n0(v.exVal),typeof v.spread==='number'?sg(v.spread*100,1)+'pp':'n/a',`<span class="chip ${/Both positive/.test(v.comb)?'good':(/Both negative/.test(v.comb)?'bad':'')}">${v.comb}</span>`]))+'<div class="small">* FY20 is nine months; FY27 is to 4 Nov 2026.</div>'}
+// ---- strategy
+const CASES=['A','B','C','D'];let sMetric='cover',sOn={A:true,B:true,C:true,D:true};
+const METRICS={cover:['Interest cover (x)',f1,v=>v.toFixed(0)],de:['D/E, all debt (x)',f2,v=>v.toFixed(1)],roic:['ROIC',pc,v=>(v*100).toFixed(0)+'%'],eva:['EVA (Rs cr)',n0,v=>(v/1000).toFixed(0)+'k'],debt:['Total debt (Rs cr)',n0,v=>(v/1000).toFixed(0)+'k'],bor:['Borrowings (Rs cr)',n0,v=>(v/1000).toFixed(0)+'k']};
+function strategy(){const c=C(),col={A:c.s1,B:c.s3,C:c.s2,D:c.s4},ctl=$('#s-ctl');ctl.innerHTML='';
+ Object.entries(METRICS).forEach(([k,m])=>{const b=el('button',{'aria-pressed':sMetric===k},m[0]);b.onclick=()=>{sMetric=k;strategy()};ctl.appendChild(b)});ctl.appendChild(el('span',{class:'sub'},'Cases:'));
+ CASES.forEach(k=>{const l=el('label',{class:'sub'},`<input type="checkbox" ${sOn[k]?'checked':''}> ${k}`);l.querySelector('input').onchange=e=>{sOn[k]=e.target.checked;strategy()};ctl.appendChild(l)});
+ const ser=CASES.filter(k=>sOn[k]).map(k=>({name:k+'. '+D.scen[k].name,color:col[k],dash:k==='C'||k==='D',values:D.scen[k][sMetric]}));legend($('#s-leg'),ser);
+ const xs=['FY26A','FY27E','FY28E','FY29E','FY30E','FY31E'],M=METRICS[sMetric];
+ if(!ser.length){$('#s-chart').innerHTML='<div class="small">Select at least one case.</div>'}else drawLine($('#s-chart'),{xs,series:ser,h:280,dots:true,yfmt:M[2],tfmt:M[1],xticks:xs.map((f,i)=>({i,l:f})),hlines:sMetric==='cover'?[{y:5,label:'5x guardrail'}]:(sMetric==='de'?[{y:2,label:'2.0x guardrail'}]:null),aria:M[0]});
+ const S=D.scenSummary;$('#s-table').innerHTML=tableOf(S[0].map((x,i)=>i===0?x:x.replace(/^([A-D]) /,'$1. ')),S.slice(1).filter(r=>r[0]).map(r=>[r[0],...r.slice(1).map(v=>{const lab=r[0];return typeof v==='number'?(/ROIC/.test(lab)?pc(v):(/cover|D\/E/.test(lab)?f2(v):n0(v))):v})]));
+ rate();curve();
+}
+function rate(){const B=D.cfBase,bp=+$('#sl-bp').value,h=+$('#sl-h').value/100;$('#o-bp').textContent=bp+' bp';$('#o-h').textContent=Math.round(h*100)+'%';const extra=bp/10000*B.repricing*(1-h),cov=B.ebit/(B.fin+extra),eps=-extra*(1-B.tax)/B.shares/B.eps;
+ $('#s-rate').innerHTML=tableOf(['FY26 balance sheet','Value'],[['Repricing debt (borrowings + half of gold loans)','Rs '+n0(B.repricing)+' cr'],['Extra interest per year','Rs '+n0(extra)+' cr'],['Interest cover','<b>'+f2(cov)+'x</b> (now '+f2(B.ebit/B.fin)+'x)'],['EPS impact',pc(eps)],['vs 5x floor',cov>=5?'<span class="chip good">above</span>':'<span class="chip bad">below</span>']])+'<div class="small">The 2022 hiking cycle was +250 bp. Gold-loan cost assumed to reprice at half the policy move.</div>'}
+function curve(){const c=C(),cv=D.curve;drawLine($('#s-curve'),{xs:cv.map(r=>pc(r[0],1)),series:[{name:'WACC',color:c.s1,values:cv.map(r=>r[3])}],h:230,dots:true,yfmt:v=>(v*100).toFixed(1)+'%',tfmt:v=>pc(v,2),xticks:cv.map((r,i)=>({i,l:i%2===0?pc(r[0],0):''})),xlab:i=>'Debt / (D+E) = '+pc(cv[i][0],1),extra:i=>`<div class="r"><span>Interest cover</span><b>${typeof cv[i][5]==='number'?f1(cv[i][5])+'x':'n/a'}</b></div><div class="r"><span>Feasible (cover &ge; 5x)</span><b>${cv[i][6]}</b></div>`,aria:'WACC vs leverage'});
+ const svg=$('#s-curve svg');if(svg){/* mark infeasible points red */const pts=svg.querySelectorAll('circle');pts.forEach((p,i)=>{if(cv[i]&&cv[i][6]==='No')p.setAttribute('fill',c.s2)})}}
+$('#s-act').innerHTML=['<b>Cap leverage:</b> cover at least 6x and D/E (all debt) at most 1.5x; term out commercial paper.','<b>Hedge rates:</b> fix about 75% of borrowings before a hiking cycle.','<b>Gold-on-loan:</b> raise to about 45% of inventory (cheapest funding, natural hedge).','<b>Payout:</b> keep the smoothed dividend, tie DPS growth to free cash flow; no buy-backs at 20x+ book.','<b>Protect capex</b> through shocks; hold a 20-day-of-revenue liquidity buffer.','<b>Trigger:</b> if cover falls below 6x, pause DPS growth and slow the inventory build.'].map(t=>`<div class="finding">${t}</div>`).join('');
+$('#sl-bp').oninput=rate;$('#sl-h').oninput=rate;
+// ---- nav / theme
+document.querySelectorAll('nav [data-go]').forEach(b=>b.onclick=()=>document.getElementById(b.dataset.go).scrollIntoView({behavior:'smooth'}));
+$('#theme').onclick=()=>{const r=document.documentElement,cur=r.dataset.theme||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');r.dataset.theme=cur==='dark'?'light':'dark';all()};
+function all(){ovD();pvCtl();pvDraw();renderBeta();policy();value();strategy()}
+let rt;addEventListener('resize',()=>{clearTimeout(rt);rt=setTimeout(all,150)});
+withTable('#ov-dbeta'.replace('#ov-dbeta','#overview .grid.g2 .card:first-child'),'#ov-dbeta',()=>tableOf(['Shock','Beta before','Beta after','Change','p-value'],SH.map(s=>[s.id+' '+s.name,f2(s.pre),f2(s.post),sg(s.chg),s.p.toFixed(3)])));
+all();
+})();
+</script>
+</body>
+</html>

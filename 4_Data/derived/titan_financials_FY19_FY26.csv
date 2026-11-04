@@ -1,0 +1,53 @@
+"Task 2(c) inputs: Titan Company consolidated financials, FY19-FY26 (Rs crore)",,,,,,,,,,
+Blue = typed from audited consolidated statements in the annual reports (see Sources). Each year uses the latest restated figure. FY19 converted from Rs lakh (AR 2019-20). FY ends 31 March.,,,,,,,,,,
+Line item,FY19,FY20,FY21,FY22,FY23,FY24,FY25,FY26,Unit,Source / comment
+Profit & loss,,,,,,,,,,
+Revenue from operations,19778.52,21052,21644,28799,40575,51084,60456,87584,Rs cr,Consolidated P&L
+Other income,182.94,153,186,234,308,533,486,552,Rs cr,Consolidated P&L
+Finance costs (total),52.54,166,203,218,300,619,953,1180,Rs cr,"Consolidated P&L; note ""Finance costs"""
+  of which: interest on borrowings,10.69,23,34,15,52,314,551,610,Rs cr,Finance-cost note
+  of which: interest on lease liabilities,0,106,114,116,134,193,222,247,Rs cr,Finance-cost note (Ind AS 116 from FY20)
+  of which: interest on gold on loan,42.54,37,55,87,109,112,174,320,Rs cr,Finance-cost note
+  of which: others,-0.69,0,0,0,5,0,6,3,Rs cr,Finance-cost note
+Depreciation & amortisation,162.84,348,375,399,441,584,693,826,Rs cr,Consolidated P&L
+Profit before exceptional items & tax,1956.89,2102,1327,2958,4447,4623,4535,6902,Rs cr,Consolidated P&L (after share of associates/JV)
+Exceptional items (expense),0,0,0,54,0,0,0,101,Rs cr,Consolidated P&L
+Profit before tax,1956.89,2102,1327,2904,4447,4623,4535,6801,Rs cr,Consolidated P&L
+Total tax expense,568.24,609,353,706,1173,1127,1198,1728,Rs cr,Consolidated P&L
+Profit for the year,1388.65,1493,974,2198,3274,3496,3337,5073,Rs cr,Consolidated P&L
+Basic EPS (Rs),15.82,16.91,10.96,24.48,36.61,39.4,37.62,57.19,Rs,Consolidated P&L
+Dividend per share declared for the year (Rs),5,4,4,7.5,10,11,11,15,Rs,"Board proposals (AR ""Dividend"" / AGM notice); FY26 proposed 8 May 2026"
+Balance sheet (31 March),,,,,,,,,,
+"Property, plant & equipment (net)",1182.31,1285,1216,1218,1343,1737,1854,2684,Rs cr,Consolidated B/S
+Capital work-in-progress,28.95,11,19,69,133,88,93,135,Rs cr,Consolidated B/S
+Gross block of PP&E (owned assets),1516,1746,1796,1929,2185,2732,3035,4112,Rs cr,"PP&E note (gross carrying amount, 31 Mar)"
+Right-of-use assets (net),0,935,917,973,1285,1543,1774,2195,Rs cr,Consolidated B/S (Ind AS 116 from 1 Apr 2019)
+Inventories,7038.82,8103,8408,13609,16584,19051,28184,42743,Rs cr,Consolidated B/S
+Current investments,69.22,114,2805,15,2164,1666,1337,2249,Rs cr,Consolidated B/S
+Cash & cash equivalents,429.53,75,181,219,232,409,407,873,Rs cr,Consolidated B/S
+Other bank balances,636.95,306,379,1354,1111,1117,1177,1044,Rs cr,Consolidated B/S
+TOTAL ASSETS,11715.25,13550,16452,21194,27023,31550,40647,60561,Rs cr,Consolidated B/S
+Total equity (incl. NCI),6084.23,6673,7502,9333,11904,9393,11624,15703,Rs cr,Consolidated B/S
+Borrowings - non-current,31.67,17,9,2,0,3302,595,93,Rs cr,Consolidated B/S
+Borrowings - current,0.08,706,163,516,2195,4536,9691,11285,Rs cr,Consolidated B/S (FY21 as restated in AR 2021-22)
+Gold on loan (metal loan),2352.9,1585,4210,5398,5299,5341,7810,16070,Rs cr,"Consolidated B/S, current financial liability"
+Lease liabilities - non-current,0,1056,1059,1138,1607,2032,2318,2712,Rs cr,Consolidated B/S
+Lease liabilities - current,0,187,197,221,266,317,363,461,Rs cr,Consolidated B/S
+TOTAL non-current liabilities,169.09,1249,1236,1349,1855,5628,3230,5065,Rs cr,Consolidated B/S
+TOTAL current liabilities,5461.93,5628,7714,10512,13264,16529,25793,39793,Rs cr,Consolidated B/S
+Memo: put-option liability for Damas minority (debt-like),0,0,0,0,0,0,0,1668,Rs cr,"AR 2025-26, note 40 (included in other financial liabilities)"
+Cash flow,,,,,,,,,,
+Net cash from operating activities,1242.92,-348,4139,-724,1370,1695,-541,5590,Rs cr,Consolidated cash flow
+  of which: increase/(decrease) in gold on loan,740.88,-768,2625,1188,-99,42,2468,7304,Rs cr,Consolidated cash flow (gold on loan is classed as operating)
+"Capex (purchase of PP&E, intangibles, inv. property)",264.72,355,146,224,432,691,494,902,Rs cr,Consolidated cash flow
+Dividends paid (cash),397.38,536,355,355,666,888,976,976,Rs cr,Consolidated cash flow (FY19-20 include DDT)
+Share buy-backs,0,0,0,0,0,0,0,0,Rs cr,"AR: company ""has not undertaken any buy-back"""
+Acquisition of treasury shares / ESOP rights,0,0,0,0,0,437,6,0,Rs cr,FY24: 236 treasury + 201 ESOP rights; FY25: 6
+Acquisition of non-controlling interest (CaratLane),0,0,0,0,0,4696,1,0,Rs cr,"Consolidated cash flow, financing"
+"Business acquisition, net of cash (Damas)",0,0,0,0,0,0,0,1171,Rs cr,AR 2025-26 cash flow / note 40
+Integrity checks (should be zero),,,,,,,,,,
+Total assets - (equity + non-current + current liabilities),0,0,0,0,0,0,0,0,,
+Finance costs - sum of components,0,0,0,0,0,0,0,0,,
+PAT - (PBT - tax),0,0,0,0,0,0,0,0,,
+PBT - (PBT before exceptional - exceptional),0,0,0,0,0,0,0,0,,
+Change in gold on loan: balance sheet - cash flow (FY26 diff = acquired Damas balances),,0,0,0,0,0,1,956,,

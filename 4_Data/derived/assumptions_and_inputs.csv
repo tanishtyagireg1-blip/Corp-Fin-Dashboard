@@ -1,0 +1,92 @@
+"Inputs, assumptions & event definitions",,,,,,,,,,,,,,
+Blue text = hard-coded input (editable). Yellow fill = key assumption/switch. Black = formula. Green = link to another sheet.,,,,,,,,,,,,,,
+,,,,,,,,,RBI repo-rate history (effective dates),,,,"India 10Y G-sec yield, monthly avg",
+Parameter,Value,Notes / rationale,,,,,,,Effective date,Repo rate,Source / note,,Month,10Y yield
+"Risk-free source for excess returns (1 = RBI repo, 2 = 10Y G-sec, 3 = none/raw)",1,Repo is the overnight policy rate and is used as the short-rate proxy for daily CAPM (91-day T-bill history not available offline). Change to 2 or 3 to test robustness - every beta in the workbook recalculates.,,,,,,,2019-07-01,0.0575,RBI MPC 6 Jun 2019 (rate in force at start of dataset),,2019-07-01,0.06597725
+Pre / post event window (months),6,Brief: 6 months before and after each shock. Robustness sheet re-runs 3 and 12 months.,,,,,,,2019-08-07,0.054,RBI MPC 7 Aug 2019,,2019-08-01,0.0661912
+Trading days per year,252,Annualisation factor for alpha and volatility.,,,,,,,2019-10-04,0.0515,RBI MPC 4 Oct 2019,,2019-09-01,0.0681335
+Rolling-beta window (trading days),126,~6 months. Keep between 60 and 126 (chart range starts after the first 126 days).,,,,,,,2020-03-27,0.044,RBI emergency MPC (COVID-19),,2019-10-01,0.065418
+Equity risk premium (India),0.06,ASSUMPTION. Practitioner range for India ~5-7.5%; sensitivity shown on Robustness sheet.,,,,,,,2020-05-22,0.04,RBI off-cycle (COVID-19),,2019-11-01,0.0663498
+"Beta used for cost of equity (1 = raw FY regression, 2 = Blume-adjusted)",2,Blume (1971): adjusted beta = w x raw + (1-w) x 1. Reduces sampling noise in single-year betas.,,,,,,,2022-05-04,0.044,RBI off-cycle hike - start of tightening cycle,,2019-12-01,0.06848575
+"Treat gold-on-loan as debt in WACC / ROIC (1 = yes, 0 = no)",1,Metal loans carry interest and are a financial liability; they also hedge gold inventory (see Ratios).,,,,,,,2022-06-08,0.049,RBI MPC 8 Jun 2022,,2020-01-01,0.068218
+"Treat lease liabilities as debt in WACC / ROIC (1 = yes, 0 = no)",1,Ind AS 116 leases are interest-bearing; EBIT is stated before lease interest.,,,,,,,2022-08-05,0.054,RBI MPC 5 Aug 2022,,2020-02-01,0.0665965
+Marginal tax rate,0.2517,Statutory rate under s.115BAA (22% + surcharge + cess) used for after-tax cost of debt. Effective rate used for NOPAT.,,,,,,,2022-09-30,0.059,RBI MPC 30 Sep 2022,,2020-03-01,0.06701575
+Shares outstanding (crore),88.78,"Equity share capital Rs 88.78 cr at Rs 1 face value (AR 2019-20, Rs 8,878 lakh); unchanged through FY26.",,,,,,,2022-12-07,0.0625,RBI MPC 7 Dec 2022,,2020-04-01,0.0676515
+Event study: estimation window length (days),120,"Market-model parameters estimated on [-(gap+length), -gap] trading days before the event.",,,,,,,2023-02-08,0.065,RBI MPC 8 Feb 2023,,2020-05-01,0.0591544
+Event study: gap before event (days),11,"Keeps estimation window clear of the event window [-10,+10].",,,,,,,2025-02-07,0.0625,RBI MPC 7 Feb 2025,,2020-06-01,0.058551
+Significance level (two-sided),0.05,Used for confidence intervals and verdict flags.,,,,,,,2025-04-09,0.06,RBI MPC 9 Apr 2025,,2020-07-01,0.0581452
+Blume weight on raw beta,0.67,Standard Blume weights (0.67 raw + 0.33 market).,,,,,,,2025-06-06,0.055,RBI MPC 6 Jun 2025 (50 bp),,2020-08-01,0.060105
+,,,,,,,,,2025-12-05,0.0525,RBI MPC Dec 2025,,2020-09-01,0.06024675
+,,,,,,,,,2026-10-07,0.055,RBI MPC 7 Oct 2026 (+25 bp; per Business Standard),,2020-10-01,0.0594484
+Shock register (2020-2026) - all eight shocks in the brief are tested; three are featured for deep-dive,,,,,,,,,,,,,2020-11-01,0.058952
+ID,Shock,Category,Event date (as announced),Event trading day (first session on/after),Featured? (1/0),Transmission channel to Titan,Source / dating note,,,,,,2020-12-01,0.058929
+S1,COVID-19 national lockdown,Pandemic / demand,2020-03-25,2020-03-25,1,"Demand collapse (stores shut), liquidity stress, gold-price spike",PM address 24 Mar 2020; lockdown from 25 Mar 2020 (brief: Mar-May 2020),,,,,,2021-01-01,0.0594162
+S2,Stimulus package & repo cut to 4.00%,Monetary / fiscal,2020-05-22,2020-05-22,0,"Cheaper liquidity, risk-on rotation",RBI off-cycle cut 22 May 2020; Atmanirbhar package 12 May 2020,,,,,,2021-02-01,0.061935
+S3,Second COVID-19 wave,Pandemic / demand,2021-05-03,2021-05-03,0,"Regional lockdowns, wedding-season disruption",Peak of second wave early May 2021 (brief: May 2021),,,,,,2021-03-01,0.06350775
+S4,Russia-Ukraine war,Geopolitical / commodity,2022-02-24,2022-02-24,0,"Commodity & gold volatility, global risk-off",Invasion began 24 Feb 2022,,,,,,2021-04-01,0.062801
+S5,RBI rate-hike cycle (4.00% -> 6.50%),Monetary,2022-05-04,2022-05-04,1,"Cost of debt up, discount rates up, valuation de-rating",RBI off-cycle hike 4 May 2022; cycle ended 8 Feb 2023,,,,,,2021-05-01,0.06225375
+S6,Adani-Hindenburg shock,Market confidence,2023-01-25,2023-01-25,0,"Index-level sentiment, FPI outflows",Hindenburg report 24 Jan 2023; first trading day 25 Jan,,,,,,2021-06-01,0.06267675
+S7,US tariff escalation & H-1B fee,Trade policy,2025-08-27,2025-08-28,0,"Export demand, sentiment, rupee",50% US tariff on India effective 27 Aug 2025; H-1B USD 100k fee 19 Sep 2025,,,,,,2021-07-01,0.0620842
+S8,US/Israel-Iran war & oil shock,Geopolitical / commodity,2026-03-02,2026-03-02,1,"Oil & gold surge, rupee weakness, inflation, later RBI hike (Oct 2026)",Strikes 28 Feb 2026; markets reacted 2 Mar 2026; Brent peak ~USD 118 late Mar,,,,,,2021-08-01,0.06280325
+,,,,,,,,,,,,,2021-09-01,0.061883
+,,,,,,,,,,,,,2021-10-01,0.0635978
+Financial-year calendar (Titan FY ends 31 March) and trading-day row mapping,,,,,,,,,,,,,2021-11-01,0.06354375
+FY,FY start,FY end,Last trading day in FY,First Data row (returns),Last Data row,Trading days,Note,,,,,,2021-12-01,0.0644032
+FY19,2018-04-01,2019-03-31,n/a,n/a,n/a,n/a,Price data begins 1 Jul 2019 - FY19 used for balance-sheet opening values only,,,,,,2022-01-01,0.06643025
+FY20,2019-04-01,2020-03-31,2020-03-31,6,191,186,Partial year: market data from 1 Jul 2019 (9 months),,,,,,2022-02-01,0.06750475
+FY21,2020-04-01,2021-03-31,2021-03-31,192,440,249,,,,,,,2022-03-01,0.06819825
+FY22,2021-04-01,2022-03-31,2022-03-31,441,688,248,,,,,,,2022-04-01,0.071058
+FY23,2022-04-01,2023-03-31,2023-03-31,689,937,249,,,,,,,2022-05-01,0.0738565
+FY24,2023-04-01,2024-03-31,2024-03-28,938,1183,246,,,,,,,2022-06-01,0.07529625
+FY25,2024-04-01,2025-03-31,2025-03-28,1184,1432,249,,,,,,,2022-07-01,0.0740206
+FY26,2025-04-01,2026-03-31,2026-03-30,1433,1679,247,,,,,,,2022-08-01,0.0727475
+FY27 YTD,2026-04-01,2027-03-31,2026-11-04,1680,1827,148,Partial year: to latest data date (4 Nov 2026),,,,,,2022-09-01,0.07280374
+,,,,,,,,,,,,,2022-10-01,0.07464925
+,,,,,,,,,,,,,2022-11-01,0.07357575
+,,,,,,,,,,,,,2022-12-01,0.0729416
+,,,,,,,,,,,,,2023-01-01,0.0739
+,,,,,,,,,,,,,2023-02-01,0.07334525
+,,,,,,,,,,,,,2023-03-01,0.0736
+,,,,,,,,,,,,,2023-04-01,0.0718
+,,,,,,,,,,,,,2023-05-01,0.070125
+,,,,,,,,,,,,,2023-06-01,0.07054
+,,,,,,,,,,,,,2023-07-01,0.071125
+,,,,,,,,,,,,,2023-08-01,0.07185
+,,,,,,,,,,,,,2023-09-01,0.07172
+,,,,,,,,,,,,,2023-10-01,0.0735
+,,,,,,,,,,,,,2023-11-01,0.0727
+,,,,,,,,,,,,,2023-12-01,0.07224
+,,,,,,,,,,,,,2024-01-01,0.072025
+,,,,,,,,,,,,,2024-02-01,0.0709
+,,,,,,,,,,,,,2024-03-01,0.07068
+,,,,,,,,,,,,,2024-04-01,0.0715
+,,,,,,,,,,,,,2024-05-01,0.07054
+,,,,,,,,,,,,,2024-06-01,0.070225
+,,,,,,,,,,,,,2024-07-01,0.070075
+,,,,,,,,,,,,,2024-08-01,0.0691
+,,,,,,,,,,,,,2024-09-01,0.068325
+,,,,,,,,,,,,,2024-10-01,0.06785
+,,,,,,,,,,,,,2024-11-01,0.06812
+,,,,,,,,,,,,,2024-12-01,0.067775
+,,,,,,,,,,,,,2025-01-01,0.06758
+,,,,,,,,,,,,,2025-02-01,0.067325
+,,,,,,,,,,,,,2025-03-01,0.066825
+,,,,,,,,,,,,,2025-04-01,0.06455
+,,,,,,,,,,,,,2025-05-01,0.06272
+,,,,,,,,,,,,,2025-06-01,0.063075
+,,,,,,,,,,,,,2025-07-01,0.0635
+,,,,,,,,,,,,,2025-08-01,0.06522
+,,,,,,,,,,,,,2025-09-01,0.06585
+,,,,,,,,,,,,,2025-10-01,0.06482
+,,,,,,,,,,,,,2025-11-01,0.065375
+,,,,,,,,,,,,,2025-12-01,0.066325
+,,,,,,,,,,,,,2026-01-01,0.06732
+,,,,,,,,,,,,,2026-02-01,0.0677
+,,,,,,,,,,,,,2026-03-01,0.0684
+,,,,,,,,,,,,,2026-04-01,0.0705
+,,,,,,,,,,,,,2026-05-01,0.0702
+,,,,,,,,,,,,,2026-06-01,0.0689
+,,,,,,,,,,,,,2026-07-01,0.0678
+,,,,,,,,,,,,,2026-08-01,0.0684
+,,,,,,,,,,,,,2026-09-01,0.0706
+,,,,,,,,,,,,,"Source: FRED series INDIRLTLT01STM (OECD Main Economic Indicators), monthly average of daily 10-year benchmark yield.",
